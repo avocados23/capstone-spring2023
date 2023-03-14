@@ -2,16 +2,15 @@ require('dotenv').config()
 const express = require('express');
 const { PythonShell } = require('python-shell');
 const app = express();
-const port = process.env.PORT || 3002;
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const https = require('https');
+
+const port = process.env.PORT || 3000;
 const URI = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPWD}@cluster0.iz0pkfv.mongodb.net/?retryWrites=true&w=majority`;
 
-const myDataSchema = new Schema({
-    // define your schema properties here
-});
-  
-const MyData = mongoose.model('MyData', myDataSchema);
+const fs = require('fs');
+const key = fs.readFileSync('./CA/localhost/localhost.decrypted.key');
+const cert = fs.readFileSync('./CA/localhost/localhost.crt');
 
 app.route('/').get((_, res) => {
     res.render('index');
@@ -48,22 +47,20 @@ app.use((err, req, res, next) => {
     console.log(err);
 });
 
-app.listen(port, () => console.log('Server started on', port));
 app.set('view engine', 'ejs');
 
-// mongoose.connect(URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// });
+const server = https.createServer({ key, cert }, app);
 
-// const connection = mongoose.connection;
-// connection.once('open', () => {
-//     console.log('MongoDB database connection established successfully');
-// });
+server.listen(port, () => {
+    console.log(`Server is listening on https://localhost:${port}`);
+});
 
 mongoose.connect(URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-  })
-    .then(() => console.log('MongoDB database connection established successfully'))
-    .catch((err) => console.error('Error connecting to database', err));
+});
+
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log('MongoDB database connection established successfully');
+});
