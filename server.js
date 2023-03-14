@@ -17,7 +17,7 @@ app.route('/').get((_, res) => {
 
 app.get('/sign1', async (_, res) => {
     const data = await PythonShell.run('parse.py', null);
-    return res.status(200).send(data);
+    return res.send(data);
 });
 
 app.get('/forecast1', async (_, res) => {
