@@ -15,12 +15,17 @@ app.get('/sign1', async (_, res) => {
     return res.status(200).send(data);
 });
 
+app.get('/testRoute', async (_, res) => {
+    return res.json("Hello world!");
+});
+
 app.use((err, req, res, next) => {
     console.log('Error found in middleware of the app...');
     console.log(err);
 });
 
 app.listen(port, () => console.log('Server started on', port));
+app.set('view engine', 'ejs');
 
 mongoose.connect(URI, {
     useNewUrlParser: true,
