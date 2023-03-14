@@ -1,4 +1,3 @@
-require('dotenv').config()
 const express = require('express');
 const { PythonShell } = require('python-shell');
 const app = express();
@@ -13,7 +12,7 @@ app.route('/').get((_, res) => {
 
 app.get('/sign1', async (_, res) => {
     const data = await PythonShell.run('parse.py', null);
-    return res.send(data);
+    return res.status(200).send(data);
     // try {
     //   const data = await PythonShell.run('parse.py', null);
       
@@ -36,7 +35,7 @@ app.get('/sign1', async (_, res) => {
 });
 
 app.get('/testRoute', async (_, res) => {
-    return res.json("Hello world!");
+    res.json("Hello world!");
 });
 
 app.use((err, req, res, next) => {
@@ -49,12 +48,12 @@ app.listen(port, () => {
     console.log(`Server is listening on http://localhost:${port}`);
 });
 
-mongoose.connect(URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
+// mongoose.connect(URI, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// });
 
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log('MongoDB database connection established successfully');
-});
+// const connection = mongoose.connection;
+// connection.once('open', () => {
+//     console.log('MongoDB database connection established successfully');
+// });
