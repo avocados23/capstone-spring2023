@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon server.js"
+    // "postinstall": "pip install numpy scipy joblib threadpoolctl scikit-learn"
   },
   "repository": {
     "type": "git",
