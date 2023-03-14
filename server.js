@@ -18,6 +18,7 @@ app.route('/').get((_, res) => {
 app.get('/sign1', async (_, res) => {
     const data = await PythonShell.run('parse.py', null);
     return res.send(data);
+<<<<<<< HEAD
 });
 
 app.get('/forecast1', async (_, res) => {
@@ -56,6 +57,8 @@ app.get('/getParkingGarage', async (_, res) => {
     //const parkingGarageNum = basicLib.getRandomInt(3);
     const parkingGarageNum = predict();
     return res.send({parkingGarageNum}).status(200);
+=======
+>>>>>>> e7c0b28 (procfile)
 });
 
 app.get('/testRoute', async (_, res) => {
