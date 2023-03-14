@@ -2,9 +2,15 @@ require('dotenv').config()
 const express = require('express');
 const { PythonShell } = require('python-shell');
 const app = express();
-const port = process.env.PORT || 3002;
 const mongoose = require('mongoose');
+const https = require('https');
+
+const port = process.env.PORT || 3000;
 const URI = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPWD}@cluster0.iz0pkfv.mongodb.net/?retryWrites=true&w=majority`;
+
+const fs = require('fs');
+const key = fs.readFileSync('./CA/localhost/localhost.decrypted.key');
+const cert = fs.readFileSync('./CA/localhost/localhost.crt');
 
 app.route('/').get((_, res) => {
     res.render('index');
@@ -24,8 +30,13 @@ app.use((err, req, res, next) => {
     console.log(err);
 });
 
-app.listen(port, () => console.log('Server started on', port));
 app.set('view engine', 'ejs');
+
+const server = https.createServer({ key, cert }, app);
+
+server.listen(port, () => {
+    console.log(`Server is listening on https://localhost:${port}`);
+});
 
 mongoose.connect(URI, {
     useNewUrlParser: true,
