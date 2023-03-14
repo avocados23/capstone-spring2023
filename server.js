@@ -69,7 +69,7 @@ app.use((err, req, res, next) => {
 
 app.set('view engine', 'ejs');
 app.listen(port, () => {
-    console.log(`Server is listening on http://localhost:${port}`);
+    console.log(`Server is listening on ${port}`);
 });
 
 mongoose.connect(URI, {
