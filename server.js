@@ -15,7 +15,7 @@ app.route('/').get((_, res) => {
     res.render('index');
 });
 
-app.get('/sign1', async (_, res) => {
+app.get('/sign12', async (_, res) => {
     const data = await PythonShell.run('parse.py', null);
     return res.send(data);
 <<<<<<< HEAD
