@@ -18,6 +18,21 @@ app.get('/sign1', async (_, res) => {
     return res.status(200).send(data);
 });
 
+app.get('/forecast1', async (_, res) => {
+    const data = await basicLib.readCsv('forecast1.csv');
+    return res.status(200).send(data);
+});
+
+app.get('/forecast12', async (_, res) => {
+    const data = await basicLib.readCsv('forecast12.csv');
+    return res.status(200).send(data);
+});
+
+app.get('/forecast14', async (_, res) => {
+    const data = await basicLib.readCsv('forecast14.csv');
+    return res.status(200).send(data);
+});
+
 app.get('/getParkingGarage', async (_, res) => {
     const parkingGarageNum = basicLib.getRandomInt(3);
     return res.send({parkingGarageNum}).status(200);
