@@ -18,10 +18,13 @@ p.fit(df)
 # random number of minutes (1 - 30)
 minutes = random.randint(1, 30)
 
+# extends dataframe
 future = p.make_future_dataframe(periods=minutes, freq='min')
 
+# calculates predicted values
 forecast = p.predict(future)
 
+# creates forecasted csv file
 forecast[['ds', 'yhat']].to_csv('forecast1.csv', index=False)
 
 
@@ -34,11 +37,13 @@ df2 = df2.rename(columns={'ts': 'ds', 'y12': 'y'})
 p2 = Prophet()
 p2.fit(df2)
 
+# extends dataframe
 future2 = p2.make_future_dataframe(periods=minutes, freq='min')
 
+# calculates predicted values
 forecast2 = p2.predict(future2)
-#forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
 
+# creates forecasted csv file
 forecast2[['ds', 'yhat']].to_csv('forecast12.csv', index=False)
 
 
@@ -51,9 +56,11 @@ df3 = df3.rename(columns={'ts': 'ds', 'y14': 'y'})
 p3 = Prophet()
 p3.fit(df3)
 
+# extends dataframe
 future3 = p3.make_future_dataframe(periods=minutes, freq='min')
 
+# calculates predicted values
 forecast3 = p3.predict(future3)
-#forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail()
 
+# creates forecasted csv file
 forecast3[['ds', 'yhat']].to_csv('forecast14.csv', index=False)
