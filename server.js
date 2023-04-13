@@ -9,6 +9,8 @@ const basicLib = require('./lib/basic');
 const port = process.env.PORT || 3000;
 const URI = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPWD}@cluster0.iz0pkfv.mongodb.net/?retryWrites=true&w=majority`;
 
+const { spawn } = require('child_process');
+
 app.route('/').get((_, res) => {
     res.render('index');
 });
@@ -33,8 +35,26 @@ app.get('/forecast14', async (_, res) => {
     return res.status(200).send(data);
 });
 
+app.get('/forecast', async (_, res) => {
+    const script = spawn('python', ['forecast.py']);
+  
+    script.stdout.on('data', (data) => {
+        res.send(data.toString());
+    });
+  
+    script.stderr.on('data', (data) => {
+        console.error(data.toString());
+        res.status(500).send('Error executing forecast.py');
+    });
+  
+    script.on('close', (code) => {
+        console.log(`Python script exited with code ${code}`);
+    });
+});
+
 app.get('/getParkingGarage', async (_, res) => {
-    const parkingGarageNum = basicLib.getRandomInt(3);
+    //const parkingGarageNum = basicLib.getRandomInt(3);
+    const parkingGarageNum = predict();
     return res.send({parkingGarageNum}).status(200);
 });
 

@@ -104,4 +104,4 @@ minutes = random.randint(1, 30)
 
 # PLACEHOLDER: USE PREDICT IN FRONTEND
 # remove once connected with frontend
-f1, f2, f3 = predict(minutes)
+#f1, f2, f3 = predict(minutes)
