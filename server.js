@@ -70,7 +70,7 @@ app.get('/getMinutes', async (req, res) => {
     }
 
     const googleDistanceMatrixObject = await basicLib.getGoogleMinutes(lat, long);
-    return res.send({minutes: googleDistanceMatrixObject});
+    return res.send({minutes: googleDistanceMatrixObject.rows[0].elements[0].duration.value});
 });
 
 app.get('/testRoute', async (_, res) => {
