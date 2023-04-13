@@ -18,7 +18,6 @@ app.route('/').get((_, res) => {
 app.get('/sign12', async (_, res) => {
     const data = await PythonShell.run('parse.py', null);
     return res.send(data);
-<<<<<<< HEAD
 });
 
 app.get('/forecast1', async (_, res) => {
@@ -54,11 +53,24 @@ app.get('/forecast', async (_, res) => {
 });
 
 app.get('/getParkingGarage', async (_, res) => {
-    //const parkingGarageNum = basicLib.getRandomInt(3);
-    const parkingGarageNum = predict();
+    const parkingGarageNum = basicLib.getRandomInt(3);
+    // const parkingGarageNum = predict();
     return res.send({parkingGarageNum}).status(200);
-=======
->>>>>>> e7c0b28 (procfile)
+});
+
+app.get('/getMinutes', async (req, res) => {
+    const lat = req.query.latitude;
+    const long = req.query.longitude;
+
+    const latRegex = new RegExp(/^(\+|-)?(?:90(?:(?:\.0{1,20})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,20})?))$/)
+    const longRegex = new RegExp(/^(\+|-)?(?:180(?:(?:\.0{1,20})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,20})?))$/);
+
+    if (!lat || !long || !latRegex.test(lat) || !longRegex.test(long)) {
+        return res.status(500).send("Needs both a valid latitude and longitude");
+    }
+
+    const googleDistanceMatrixObject = await basicLib.getGoogleMinutes(lat, long);
+    return res.send({minutes: googleDistanceMatrixObject.rows[0].elements[0].duration.value});
 });
 
 app.get('/testRoute', async (_, res) => {
