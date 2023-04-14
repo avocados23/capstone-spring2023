@@ -4,15 +4,20 @@ import random
 from prophet import Prophet
 from prophet.serialize import model_to_json, model_from_json
 
+p, p2, p3 = NULL
+
 def load():
-    with open('f1.json', 'r') as fin:
-        p = model_from_json(fin.read())
+    if p == NULL:
+        with open('f1.json', 'r') as fin:
+            p = model_from_json(fin.read())
 
-    with open('f2.json', 'r') as fin:
-        p2 = model_from_json(fin.read())
+    if p2 == NULL:
+        with open('f2.json', 'r') as fin:
+            p2 = model_from_json(fin.read())
 
-    with open('f3.json', 'r') as fin:
-        p3 = model_from_json(fin.read())
+    if p3 == NULL:
+        with open('f3.json', 'r') as fin:
+            p3 = model_from_json(fin.read())
 
     return p, p2, p3
 
@@ -97,6 +102,7 @@ def train():
 
 
 # do once
+# called whenever Flask server is loaded before we predict
 train()
 
 # random number of minutes (1 - 30)
@@ -104,4 +110,5 @@ minutes = random.randint(1, 30)
 
 # PLACEHOLDER: USE PREDICT IN FRONTEND
 # remove once connected with frontend
-#f1, f2, f3 = predict(minutes)
+# check if files are loaded (singleton)
+f1, f2, f3 = predict(minutes)

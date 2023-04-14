@@ -41,12 +41,12 @@ app.get('/forecast', async (_, res) => {
     script.stdout.on('data', (data) => {
         res.send(data.toString());
     });
-  
+
     script.stderr.on('data', (data) => {
         console.error(data.toString());
         res.status(500).send('Error executing forecast.py');
     });
-  
+
     script.on('close', (code) => {
         console.log(`Python script exited with code ${code}`);
     });
