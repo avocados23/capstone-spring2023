@@ -4,18 +4,20 @@ import random
 from prophet import Prophet
 from prophet.serialize import model_to_json, model_from_json
 
-p, p2, p3 = NULL
+p = None
+p2 = None
+p3 = None
 
 def load():
-    if p == NULL:
+    if p is None:
         with open('f1.json', 'r') as fin:
             p = model_from_json(fin.read())
 
-    if p2 == NULL:
+    if p2 is None:
         with open('f2.json', 'r') as fin:
             p2 = model_from_json(fin.read())
 
-    if p3 == NULL:
+    if p3 is None:
         with open('f3.json', 'r') as fin:
             p3 = model_from_json(fin.read())
 
