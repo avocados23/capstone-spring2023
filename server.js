@@ -53,7 +53,23 @@ app.get('/predict', checkValidLatLong, async (req, res) => {
 app.get('/actual', async (_, res) => {
     const data = await basicLib.getActualSpots();
     let xmlToJSON = JSON.parse(xmlParser.toJson(data));
-    return res.send(xmlToJSON);
+    let champsDeckInfoJSON = {
+        title: "Champions Parking Deck",
+        availableSpots: xmlToJSON.decks["ZoneVacanSpaces"][1]["Result"]
+    };
+    let masonDeckInfoJSON = {
+        title: "Mason Street Parking Deck",
+        availableSpots: xmlToJSON.decks["ZoneVacanSpaces"][xmlToJSON.decks["ZoneVacanSpaces"].length-2]["Result"]
+    };
+    let warsawDeckInfoJSON = {
+        title: "Warsaw Avenue Parking Deck",
+        availableSpots: xmlToJSON.decks["ZoneVacanSpaces"][4]["Result"]
+    };
+
+    let allParkingData = {
+        parkingData: [champsDeckInfoJSON, masonDeckInfoJSON, warsawDeckInfoJSON]
+    }
+    return res.send(allParkingData);
 });
 
 app.get('/testRoute', async (_, res) => {
