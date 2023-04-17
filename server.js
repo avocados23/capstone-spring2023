@@ -47,19 +47,40 @@ app.get('/predict', checkValidLatLong, async (req, res) => {
     const lat = req.query.latitude;
     const long = req.query.longitude;
 
+    console.log('Passed in lat and long:', lat, long)
+
+    const etaToChamps = await basicLib.getMinutesFromDestPrettified(lat, long, 38.43502599007161, -78.87410192849666);
+    const etaToMason = await basicLib.getMinutesFromDestPrettified(lat, long, 38.441077053986234, -78.87189939666584);
+    const etaToWarsaw = await basicLib.getMinutesFromDestPrettified(lat, long, 38.44049301960376, -78.8775374000211);
+
     const data = await basicLib.getFlaskServerSpots(lat, long);
-    let json_obj = {data: []};
-    json_obj.data.push({
+    let json_obj = {parkingData: []};
+    json_obj.parkingData.push({
         name: "Warsaw Avenue Parking Deck",
-        spotsPredicted: data[0]
+        spotsPredicted: basicLib.round(Number(data[0]), 0),
+        coordinate: {
+            latitude: 38.43502599007161,
+            longitude: -78.87410192849666,
+        },
+        time: etaToChamps.duration
     });
-    json_obj.data.push({
+    json_obj.parkingData.push({
         name: "Mason Street Parking Deck",
-        spotsPredicted: data[1]
+        spotsPredicted: basicLib.round(Number(data[1]), 0),
+        coordinate: {
+            latitude: 38.441077053986234, 
+            longitude: -78.87189939666584,
+        },
+        time: etaToMason.duration
     });
-    json_obj.data.push({
-        name: "James Madison University Main Parking Deck",
-        spotsPredicted: data[2]
+    json_obj.parkingData.push({
+        name: "Champions Parking Deck",
+        spotsPredicted: basicLib.round(Number(data[2]), 0),
+        coordinate: {
+            latitude: 38.44049301960376,
+            longitude: -78.8775374000211,
+        },
+        time: etaToWarsaw.duration
     });
     return res.send(json_obj);
 });
