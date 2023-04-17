@@ -1,5 +1,0 @@
-numpy 
-scipy 
-joblib 
-threadpoolctl 
-scikit-learn
