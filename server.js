@@ -5,6 +5,7 @@ const app = express();
 const mongoose = require('mongoose');
 
 const basicLib = require('./lib/basic');
+const checkValidLatLong = require('./utils/checkValidLatLong');
 
 const port = process.env.PORT || 3000;
 const URI = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPWD}@cluster0.iz0pkfv.mongodb.net/?retryWrites=true&w=majority`;
@@ -54,23 +55,25 @@ app.get('/forecast', async (_, res) => {
 
 app.get('/getParkingGarage', async (_, res) => {
     const parkingGarageNum = basicLib.getRandomInt(3);
-    // const parkingGarageNum = predict();
     return res.send({parkingGarageNum}).status(200);
 });
 
-app.get('/getMinutes', async (req, res) => {
+app.get('/getMinutes', checkValidLatLong, async (req, res) => {
+    const lat = req.query.latitude;
+    const long = req.query.longitude;
+    const googleDistanceMatrixObject = await basicLib.getGoogleMinutes(lat, long);
+    if (googleDistanceMatrixObject.rows[0].elements[0].status === 'ZERO_RESULTS') {
+        return res.status(500).send({minutes: 0});
+    }
+    return res.send({minutes: (googleDistanceMatrixObject.rows[0].elements[0].duration.value / 60)});
+});
+
+app.get('/predict', checkValidLatLong, async (req, res) => {
     const lat = req.query.latitude;
     const long = req.query.longitude;
 
-    const latRegex = new RegExp(/^(\+|-)?(?:90(?:(?:\.0{1,20})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,20})?))$/)
-    const longRegex = new RegExp(/^(\+|-)?(?:180(?:(?:\.0{1,20})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,20})?))$/);
-
-    if (!lat || !long || !latRegex.test(lat) || !longRegex.test(long)) {
-        return res.status(500).send("Needs both a valid latitude and longitude");
-    }
-
-    const googleDistanceMatrixObject = await basicLib.getGoogleMinutes(lat, long);
-    return res.send({minutes: (googleDistanceMatrixObject.rows[0].elements[0].duration.value / 60)});
+    const data = await basicLib.getFlaskServerSpots(lat, long);
+    return res.send(data);
 });
 
 app.get('/testRoute', async (_, res) => {
