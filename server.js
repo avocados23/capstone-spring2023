@@ -34,7 +34,20 @@ app.get('/predict', checkValidLatLong, async (req, res) => {
     const long = req.query.longitude;
 
     const data = await basicLib.getFlaskServerSpots(lat, long);
-    return res.send(data);
+    let json_obj = {data: []};
+    json_obj.data.push({
+        name: "Warsaw Avenue Parking Deck",
+        spotsPredicted: data[0]
+    });
+    json_obj.data.push({
+        name: "Mason Street Parking Deck",
+        spotsPredicted: data[1]
+    });
+    json_obj.data.push({
+        name: "James Madison University Main Parking Deck",
+        spotsPredicted: data[2]
+    });
+    return res.send(json_obj);
 });
 
 app.get('/actual', async (_, res) => {
