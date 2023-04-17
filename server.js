@@ -55,15 +55,27 @@ app.get('/actual', async (_, res) => {
     let xmlToJSON = JSON.parse(xmlParser.toJson(data));
     let champsDeckInfoJSON = {
         title: "Champions Parking Deck",
-        availableSpots: xmlToJSON.decks["ZoneVacanSpaces"][1]["Result"]
+        availableSpots: xmlToJSON.decks["ZoneVacanSpaces"][1]["Result"],
+        coordinate: {
+            latitude: 38.43502599007161,
+            longitude: -78.87410192849666,
+        }
     };
     let masonDeckInfoJSON = {
         title: "Mason Street Parking Deck",
-        availableSpots: xmlToJSON.decks["ZoneVacanSpaces"][xmlToJSON.decks["ZoneVacanSpaces"].length-2]["Result"]
+        availableSpots: xmlToJSON.decks["ZoneVacanSpaces"][xmlToJSON.decks["ZoneVacanSpaces"].length-2]["Result"],
+        coordinate: {
+            latitude: 38.441077053986234, 
+            longitude: -78.87189939666584,
+        }
     };
     let warsawDeckInfoJSON = {
         title: "Warsaw Avenue Parking Deck",
-        availableSpots: xmlToJSON.decks["ZoneVacanSpaces"][4]["Result"]
+        availableSpots: xmlToJSON.decks["ZoneVacanSpaces"][4]["Result"],
+        coordinate: {
+            latitude: 38.44049301960376,
+            longitude: -78.8775374000211,
+        }
     };
 
     let allParkingData = {
