@@ -67,7 +67,7 @@ app.get('/actual', async (_, res) => {
     };
 
     let allParkingData = {
-        parkingData: [champsDeckInfoJSON, masonDeckInfoJSON, warsawDeckInfoJSON]
+        parkingData: [warsawDeckInfoJSON, masonDeckInfoJSON, champsDeckInfoJSON]
     }
     return res.send(allParkingData);
 });
